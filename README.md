@@ -54,4 +54,40 @@ extern exit
 $ ld -dynamic-linker /lib/i386-linux-gnu/ld-2.19.so -o cpuid -lc a.o -m elf_i386
 ```
 
+##### 使用自定義共享庫
+ - 編譯共享庫
+```
+$ gcc mul.c -o libmul.so -shared -m32 -fPIC
+```
 
+ - 彙編，生成目標文件
+```
+$ nasm -s lab1.s -o a.o -f elf32
+```
+
+ - 鏈接目標文件和共享庫，生成可執行文件
+```
+$ ld -dynamic-linker /lib/i386-linux-gnu/ld-2.19.so -o lab1 -lc -L ./ -l mul a.o -m elf_i386
+```
+
+ - 運行
+  - 臨時路徑法
+	```
+	$ LD_LIBRARY_PATH=./ ./lab1
+	```
+
+  - 永久鏈接法
+    將自定義共享庫放到`/etc/ld.so.conf`所包含的路徑中，
+    或者將共享庫所在的路徑添加到`/etc/ld.so.conf`中，
+    然後更新共享庫目錄
+	```
+	$ sudo ldconfig
+	```
+	查看自定義的共享庫是否已被加載
+	```
+	$ ldconfig -p | grep mul
+	```
+    如果已經被加載，則可以直接運行程序，不會報錯（找不到共享庫）
+    ```
+    $ ./lab1
+    ```
