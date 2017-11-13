@@ -16,8 +16,8 @@ int BigInt(void)
     scanf("%s%s", num1, num2);
     char *result = "0";
     result = multiBigInteger(num1, num2);
-	if(result[0]=='0') printf("%s",result+1);
-	else printf("%s",result);
+	while (result[0]=='0' && result[1]) result++;
+	printf("%s",result);
 }
 
 char *multiBigInteger(const char *num1, const char *num2)
@@ -71,6 +71,5 @@ char *multiBigInteger(const char *num1, const char *num2)
         offset++;
 
     }
-    //printf("num1Len:%d\nnum2Len:%d\n", num1Len, num2Len);
     return result;
 }
