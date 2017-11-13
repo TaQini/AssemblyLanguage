@@ -39,7 +39,7 @@ loopi:
 	jmp cmpi
 
 opi:
-	nop
+	nop ; some operation.... to be implement
 	add dword [ebp-0x18], 1
 
 loopj:
