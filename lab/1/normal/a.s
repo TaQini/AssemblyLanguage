@@ -11,6 +11,7 @@ section .data
 	pb dd 0
 	lb dd 0
 	pc dd 0
+	lc dd 0
 
 bigxbig:
 bigxbig_init:
@@ -33,26 +34,21 @@ bigxbig_init:
     push eax
 	push 0			;i = ebp-0x18
 	push 0			;j = ebp-0x1c
-
 loadc:
 	mov edi, pc
 	mov edi, [edi]
-
-;mul by bit
+;mul
 loopi:
 	mov eax, [ebp-0x10]	; la
 	mov dword [ebp-0x18], eax ; i=la
 	jmp cmpi
-
 opi:
 	nop ; some operation.... to be implement
 	sub dword [ebp-0x18], 1 ; i--
-
 loopj:
 	mov eax, [ebp-0x14] ; lb
 	mov dword [ebp-0x1c], eax; j=lb
 	jmp cmpj
-
 opj:
 	sub dword [ebp-0x1c], 1 ; j--
 	mov esi, [ebp-0x8]  ; pa
@@ -75,14 +71,12 @@ opj:
 	shl ebx, 2
 	add ebx, edi
 	add [ebx], eax		; (int) pc[i+j+1] += (pa[i]-'0')*(pb[j]-'0')
-
 cmpj:
 	cmp dword [ebp-0x1c], 0 ; j > 0
 	ja opj
 cmpi:
 	cmp dword [ebp-0x18], 0 ; i > 0
 	ja opi
-
 ;carry
 loopi2:
 	mov eax, [ebp-0x10] ; la
@@ -100,34 +94,45 @@ opi2:
 	mov [edi+ebx*4], edx	; pc[i] %= 10
 	add [edi+ebx*4-4], eax	; pc[i-1] += pc[i]/10
 	nop	
-
 cmpi2:
 	cmp dword [ebp-0x18], 0	
 	ja opi2				; i > 0 ?
-
 bigxbig_done:
 	leave
 	ret
 
-print:
-;;;;;;;;;;;;;
-	mov eax, la
+print:	
+	push ebp
+	mov ebp, esp
+	mov eax, lc
 	mov eax, [eax]
-	mov ebx, lb
-	mov ebx, [ebx]
-	add eax, ebx
-	mov edi, eax ; edi=la+lb
+	push 0		; -0x4  i
+	push eax 	; -0x8  lc
+	push 1		; -0xc  0
+	push 0		; -0x10 buf
+	push 1		; -0x14 1
 loopp:
-	mov ecx, 0
+	mov dword [ebp-0x4], 0
 	jmp cmpp
-cmpp:
-	cmp ecx, edi
-	jb opp
 opp:
-	mov eax, [edi]
-	add eax, 0x30
-	mov [edi], eax
-
+	mov eax, ecx
+	shl eax, 2
+	add eax, edi
+	mov [ebp-0x10], eax
+	; +'0'
+	mov ebx, [eax]
+	add ebx, 0x30
+	mov [eax], ebx
+	;write(1,buf,1)
+	call write
+	add dword [ebp-0x4], 1
+cmpp:
+	mov ecx, [ebp-0x4] ; i
+	cmp ecx, [ebp-0x8] ; i<lc ?
+	jb opp
+print_done:
+	leave
+	ret
 
 _start:
 malloca:
@@ -176,15 +181,19 @@ readb:
     add ebx, eax
     xor ecx, ecx
     mov [ebx], ecx
-mallocc:
-	;c = malloc(4*(la+lb))
-    mov eax, la
+getlc:
+	mov eax, la
 	mov eax, [eax]
 	mov ebx, lb
 	mov ebx, [ebx]
-	add eax, ebx
-	mov ebx, 4
-	mul ebx
+	add eax, ebx  ; lc=la+lb
+	mov ecx, lc
+	mov [ecx], eax
+mallocc:
+	;c = malloc(4*lc)
+    mov eax, lc
+	mov eax, [eax]
+	shl eax, 2
 	push eax
     call malloc
     ;ptr -> data.pc
@@ -205,18 +214,19 @@ opc:
 cmpc:
 	cmp eax, dword [esp]
 	jl opc
-
 calc:
 	call bigxbig
-
-judge:
+cut0:
 	cmp dword [edi], 0
-	jnz print
+	jnz call_print
 	add edi, 4
-
-	call print
+	mov eax, lc
+	sub dword [eax], 1
+	cmp dword [eax], 1
+	ja cut0
+call_print:
+	call print 
 done:
-	;exit(0)
 	push 0
 	call exit
 
