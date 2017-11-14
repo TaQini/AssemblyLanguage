@@ -12,7 +12,7 @@ char *multiBigInteger(const char *, const char *);
 
 int BigInt(void)
 {
-    char num1[100] = {'\0'}, num2[100] = {'\0'};
+    char num1[1000] = {'\0'}, num2[1000] = {'\0'};
     scanf("%s%s", num1, num2);
     char *result = "0";
     result = multiBigInteger(num1, num2);
