@@ -1,11 +1,12 @@
 #!/bin/sh
+# script to run the program by TaQini
 
 # build shared library
-gcc mul.c -o libmul.so -shared -m32 -fPIC
-# assemble
-nasm -s lab1-2.s -o a.o -f elf32
+# gcc mul.c -o libmul.so -shared -m32 -fPIC
+# assembly
+# nasm -s lab1-2.s -o a.o -f elf32
 # link
-ld -dynamic-linker /lib/i386-linux-gnu/ld-2.19.so -o lab1-2 -lc -L ./ -l mul a.o -m elf_i386
+# ld -dynamic-linker /lib/i386-linux-gnu/ld-2.19.so -o lab1-2 -lc -L ./ -l mul a.o -m elf_i386
 
 # run without installing shared library
 LD_LIBRARY_PATH=./ ./lab1-2
@@ -16,10 +17,9 @@ LD_LIBRARY_PATH=./ ./lab1-2
 # sudo ldconfig
 # ./lab1
 
-
 # clean up
-rm a.o
-rm ./lab1-2
-rm ./libmul.so
+# rm a.o
+# rm ./lab1-2
+# rm ./libmul.so
 # sudo rm /etc/ld.so.conf.d/libmul.conf
 

@@ -4,3 +4,4 @@ rand.o: rand.s
 	nasm -g -f elf32 -s rand.s -o rand.o
 clean:
 	rm rand.o
+	rm rand
