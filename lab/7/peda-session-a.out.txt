@@ -1,5 +1,0 @@
-break _start
-break compare
-break *0x80481e9
-break *0x80481e7
-

@@ -10,12 +10,4 @@
  ```
  diff filea fileb
  ```
-```
-$ diff filea fileb 
 
-$ diff filea filec
-3c3
-< ID: xxxxxx1097
----
-> ID: ******1097
-```

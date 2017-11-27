@@ -1,4 +1,0 @@
-#!/bin/sh
-nasm -s b.s -o b.o -f elf32
-ld -dynamic-linker /lib/i386-linux-gnu/ld-2.19.so -o b -lc b.o -m elf_i386
-rm b.o
