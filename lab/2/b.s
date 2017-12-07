@@ -33,4 +33,13 @@ cmpi:
 	cmp dword [esp+0x8], 4 ; i<4 ?
 	jl opi
 done:
+	nop
+	and eax, 0
+	nop
+	xor eax, eax
+	nop 
+	or eax, 0xffffffff
+	nop
+	and eax, 0x12345678
+	nop
 	call exit

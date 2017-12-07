@@ -36,14 +36,13 @@ hExit       resd    1
 hFrame      resd    1
 
 SECTION .text
-;~ int main( int   argc,
-          ;~ char *argv[] )
+; int main( int argc, char *argv[] )
 main:
     push    ebp
     mov     ebp, esp
 
     lea     eax, [ebp + 12]
-    lea     ecx, [ebp + 8] 
+    lea     ecx, [ebp + 8]
     push    eax
     push    ecx
     call    gtk_init

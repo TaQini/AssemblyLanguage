@@ -10,14 +10,16 @@ section .data
 rand:
 	push ebp
 	mov ebp, esp
-	rdtsc
-	xor edx, edx
+	rdtsc              ; rnd: eax
 	mov ebx, [ebp+0x8] ; amax
 	mov ebx, [ebx]
+	mov ecx, [ebp+0xc] ; amin
+	mov ecx, [ecx]
+	sub ebx, ecx       ; amax-amin
+	xor edx, edx
 	div ebx
-	mov eax, edx
-	mov ebx, [ebp+0xc] ; amin
-	add eax, [ebx]
+	mov eax, edx       ; rnd: (0,amax-amin)
+	add eax, ecx       ; rnd: (amin, amax)
 	leave
 	ret
 _start:
