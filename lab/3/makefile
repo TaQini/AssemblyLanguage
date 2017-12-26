@@ -1,9 +1,12 @@
-a: a.o
-	ld -o a a.o -m elf_i386 -dynamic-linker /lib/i386-linux-gnu/ld-2.19.so -lc
-a.o: a.s
-	nasm -s a.s -o a.o -f elf32
+c: calc.c
+	gcc -g calc.c -o c `pkg-config --cflags --libs gtk+-3.0`
+asm: calc.o
+	gcc -g -o asm calc.o -lc `pkg-config --cflags --libs gtk+-3.0`
+calc.o: calc.s
+	nasm -g -f elf calc.s
 clean:
-	rm a
-	rm a.o
+	rm c
+	rm asm
+	rm *.o
 	rm peda*
-	rm .gdb*
+	rm .gdb
