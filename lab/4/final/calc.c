@@ -14,7 +14,7 @@ static gboolean delete_event( GtkWidget *widget,
 }
 
 static void calc(const char *buf){
-/*    float a, b;
+    float a, b;
     char op;
     char tmp[1024];
     sscanf(buf, "%f%c%f", &a, &op, &b);
@@ -27,8 +27,8 @@ static void calc(const char *buf){
     } else if (op == '/' && b){
         sprintf(tmp, "%f",a/b);
     }
-*/
-//	gtk_label_set_text((GtkLabel *)label, tmp);
+
+	gtk_label_set_text((GtkLabel *)label, tmp);
 }
 
 static void hello( GtkWidget *widget,
