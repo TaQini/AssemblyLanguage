@@ -2,6 +2,7 @@
  > 结合 Windows 界面编程,自行查找相关浮点运算指令,实现完善的计算器功能。
 
 ## 说明
+ - 在linux 32-bit 虚拟机中运行
  - calc.c 为C语言实现
  - calc.s 为汇编实现
  - 编译calc.c: `make c` 
