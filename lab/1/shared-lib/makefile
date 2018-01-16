@@ -5,9 +5,10 @@ a.o: lab1-2.s
 libmul.so: mul.c
 	gcc mul.c -o libmul.so -shared -m32 -fPIC
 clean:
-	rm a.o
+	rm ./a.o
 	rm ./lab1-2
 	rm ./libmul.so
+	rm ./libmul.conf
 config:
 	pwd > ./libmul.conf
 	# install shared library
